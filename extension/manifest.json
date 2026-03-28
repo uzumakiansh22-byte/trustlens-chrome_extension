@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "TrustLens PRO",
+  "version": "1.5",
+  "permissions": ["contextMenus", "storage", "sidePanel", "scripting"],
+  "host_permissions": ["http://localhost:5000/*"],
+  "background": { "service_worker": "background.js" },
+  "side_panel": { "default_path": "sidepanel.html" },
+  "icons": { "128": "icon.png" }
+}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head><link rel="stylesheet" href="style.css"></head>
+<body>
+  <div class="pro-app">
+    <header>
+      <div class="glow-dot"></div>
+      <h1>TrustLens <span>PRO</span></h1>
+    </header>
+
+    <main id="output">
+  <div class="idle-state">SYSTEM READY</div>
+</main>
+
+<div class="control-panel">
+  <input type="text" id="manual-url" placeholder="Paste link...">
+  <button id="url-btn">SCAN URL</button>
+  </div>      
+      <div class="upload-wrapper">
+        <input type="file" id="file-in" hidden>
+        <button id="fake-upload-btn" class="secondary-btn">UPLOAD FILE FOR AUDIT</button>
+      </div>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
