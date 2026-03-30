@@ -1,53 +1,61 @@
-import { callGemini, callGroq, callSightengine, safeParse } from "./aiService.js";
+import { callSmartVisionAI, callSightengine, safeParse } from "./aiService.js";
 
+/**
+ * Handles Image Forensics using a 60/40 Weighted Scoring System.
+ * Uses Groq (Vision) + Sightengine (Pixel Analysis).
+ */
 export async function handleImage(imageUrl) {
-  const prompt = `You are a Lead Forensic Investigator. Generate a Technical Audit Report.
+  const prompt = `Perform a MASTER 5-PILLAR FORENSIC AUDIT on this image.
   
-  REQUIRED SECTIONS IN YOUR 'summary':
-  1. VISUAL EVIDENCE: Analyze lighting, shadows, and edge consistency.
-  2. CONTEXTUAL EVIDENCE: Is this event verified by credible news? Is the source reliable?
-  3. PIXEL INTEGRITY: Mention any AI-signature patterns or compression artifacts.
+  CORE MISSION:
+  1. DESCRIPTION: Describe every detail in the image.
+  2. OCR AUDIT: Read ALL text on the image. Check if the claims in that text are FACTUAL or a HOAX.
+  3. THE 5 PILLARS: 
+     - Pillar 1 (Gen-AI): Identify pixel noise and synthetic textures.
+     - Pillar 2 (Faces): Check for deepfake 'shimmer' around eyes/mouth.
+     - Pillar 3 (Forensics): Identify localized compression or editing traces.
+     - Pillar 4 (Logic): Audit anatomical accuracy and shadow physics.
+     - Pillar 5 (Provenance): Identify the likely ORIGIN or source outlet.
 
   STRICT JSON OUTPUT:
   {
-    "content_summary": "Short description of the media.",
-    "transcribed_text": "Text found via OCR.",
+    "content_summary": "Detailed scene description.",
+    "transcribed_text": "Exact text found on image.",
     "verdict": "Real" | "Manipulated" | "AI-Generated",
     "trust_score": 0-100,
-    "summary": "EXPLAIN THE 'WHY': Start with 'Forensic Analysis:' and break down the specific reasons for this score based on the 3 sections above.",
-    "red_flags": ["Specific technical reason 1", "Specific factual error 2"],
-    "green_flags": ["Authentic marker 1"],
-    "origin_trace": "Detailed source investigation"
+    "detailed_report": {
+       "gen_ai_analysis": "Pillar 1 analysis.",
+       "face_forensics": "Pillar 2 analysis.",
+       "metadata_editing": "Pillar 3 & OCR truth-check.",
+       "physical_logic": "Pillar 4 analysis.",
+       "provenance_check": "Pillar 5 findings."
+    },
+    "summary": "Final forensic conclusion. Explain why it is real or fake.",
+    "red_flags": [],
+    "green_flags": [],
+    "origin_trace": "Cite specific source URLs or outlets if verified."
   }`;
 
-  console.log("TrustLens PRO: Commencing Full Forensic Audit...");
+  console.log("TrustLens PRO: Initiating Visual Audit (Groq Vision + Sightengine)...");
 
-  const [gemRaw, groqRaw, sight] = await Promise.all([
-    callGemini(prompt, imageUrl).catch(() => null),
-    callGroq(prompt, imageUrl).catch(() => null),
-    callSightengine(imageUrl, "image").catch(() => null)
+  // Parallel execution for maximum performance during the demo
+  const [visionRaw, sight] = await Promise.all([
+    callSmartVisionAI(prompt, imageUrl).catch(() => null),
+    callSightengine(imageUrl).catch(() => null)
   ]);
 
-  const gemRes = safeParse(gemRaw);
-  const groqRes = safeParse(groqRaw);
-
-  // FAIL-SAFE: If LLMs fail, the report explains it's a "Pixel-Only" audit
-  const mainAi = gemRes || groqRes || { 
-    verdict: sight ? (sight.score > 50 ? "Real" : "Manipulated") : "Uncertain", 
-    trust_score: sight ? sight.score : 50, 
-    content_summary: "LLM Offline: Pixel Audit Only.",
-    transcribed_text: "N/A",
-    summary: `TECHNICAL REPORT: Primary AI reasoning is offline. Analysis is based strictly on Sightengine Pixel-Scanning. ${sight?.is_ai ? "Pixels show high probability of synthetic generation (GenAI)." : "Pixel distribution matches standard camera sensors."}`,
-    red_flags: sight?.is_ai ? ["Synthetic Noise Pattern"] : ["Contextual AI Offline"],
-    green_flags: !sight?.is_ai ? ["Natural Metadata Distribution"] : [],
-    origin_trace: "Sightengine Forensic Node"
+  // Use the universal parser with 'image' type context
+  const mainAi = safeParse(visionRaw, "image") || { 
+    verdict: sight ? (sight.score > 50 ? "Real" : "Manipulated") : "Uncertain",
+    trust_score: sight ? sight.score : 50,
+    summary: "Visual engines offline. Audit based on pixel-scan forensics." 
   };
 
-  let finalScore = mainAi.trust_score;
-  if (sight) {
-    // If AI works, we blend. If not, we trust Sightengine's pixel score 100%.
-    finalScore = (gemRes || groqRes) ? Math.round((sight.score * 0.5) + (mainAi.trust_score * 0.5)) : sight.score;
-  }
+  // Logic: Pixels (Hard Evidence) 60% + AI (Contextual Logic) 40%
+  const finalScore = sight ? Math.round((sight.score * 0.6) + (mainAi.trust_score * 0.4)) : mainAi.trust_score;
 
-  return { type: "image", results: [{ ...mainAi, trust_score: finalScore }] };
+  return { 
+    type: "image", 
+    results: [{ ...mainAi, trust_score: finalScore }] 
+  };
 }
