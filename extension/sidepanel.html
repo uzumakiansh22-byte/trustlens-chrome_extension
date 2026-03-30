@@ -1,27 +1,32 @@
 <!DOCTYPE html>
 <html>
-<head><link rel="stylesheet" href="style.css"></head>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
-  <div class="pro-app">
     <header>
-      <div class="glow-dot"></div>
-      <h1>TrustLens <span>PRO</span></h1>
+        <div class="glow-dot"></div>
+        <h1>TRUST<span>LENS</span> PRO</h1>
     </header>
 
     <main id="output">
-  <div class="idle-state">SYSTEM READY</div>
-</main>
+        <div class="idle-state">SYSTEM READY FOR AUDIT</div>
+    </main>
 
-<div class="control-panel">
-  <input type="text" id="manual-url" placeholder="Paste link...">
-  <button id="url-btn">SCAN URL</button>
-  </div>      
-      <div class="upload-wrapper">
-        <input type="file" id="file-in" hidden>
-        <button id="fake-upload-btn" class="secondary-btn">UPLOAD FILE FOR AUDIT</button>
-      </div>
+    <div class="control-panel">
+    <input type="text" id="manual-url" placeholder="Paste Media URL or News Claim...">
+    
+    <textarea id="video-transcript" placeholder="Optional: Paste Video Transcript to fact-check speech..." style="width:100%; height:40px; margin-top:8px; border-radius:8px; background:#1e293b; border:1px solid #334155; color:white; font-size:0.7rem; padding:8px;"></textarea>
+
+    <div class="input-group" style="margin-top:10px; display:flex; gap:5px;">
+        <button id="url-btn" style="flex:1;">SCAN MEDIA</button>
+        <button id="text-btn" style="flex:1; background:var(--yellow);">CHECK TEXT</button>
     </div>
-  </div>
-  <script src="popup.js"></script>
+    
+    <input type="file" id="file-in" style="display:none" accept="image/*">
+    <button class="secondary-btn" id="fake-upload-btn" style="width:100%; margin-top:5px;">UPLOAD FOR FORENSICS</button>
+</div>
+    <script src="popup.js"></script>
 </body>
 </html>
