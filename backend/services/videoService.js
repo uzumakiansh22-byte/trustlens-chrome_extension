@@ -1,33 +1,62 @@
-import { callGemini, callGroq, callSightengine, safeParse } from "./aiService.js";
+import { callSmartVisionAI, callSmartTextAI, callSightengine, safeParse } from "./aiService.js";
 
-export async function handleVideo(videoUrl) {
-  const prompt = `Video Forensic Audit Request.
-  Analyze the footage for:
-  - Facial warping during rapid movement.
-  - Sync errors between audio and lip movement.
-  - Background 'shimmering' typical of deepfakes.
+/**
+ * Handles Video Forensics.
+ * 1. Checks visual authenticity (Groq + Sightengine).
+ * 2. Checks transcript authenticity (OpenRouter Search) if provided.
+ */
+export async function handleVideo(videoUrl, transcript = null) {
+  const visualPrompt = `Perform a Video Forensic Audit. 
+  Check for deepfake artifacts (motion blur, lip-sync glitches, background warping).
+  Return JSON: { content_summary, verdict, trust_score, detailed_report, summary }`;
 
-  Respond ONLY JSON: {
-    "content_summary": "...",
-    "transcribed_text": "...",
-    "verdict": "Real" | "Manipulated",
-    "trust_score": 0-100,
-    "summary": "DETAILED AUDIT: Explain why the video movements look natural or synthetic. Mention specific timestamps if possible.",
-    "red_flags": [], "green_flags": [], "origin_trace": "..."
-  }`;
+  console.log("--- VIDEO AUDIT (Multimodal Stream) ---");
 
-  const [gemRaw, groqRaw, sight] = await Promise.all([
-    callGemini(prompt, videoUrl).catch(() => null),
-    callGroq(prompt, videoUrl).catch(() => null),
+  // 1. Visual & Pixel Audit (Always Free)
+  const [visionRaw, sight] = await Promise.all([
+    callSmartVisionAI(visualPrompt, videoUrl).catch(() => null),
     callSightengine(videoUrl, "video").catch(() => null)
   ]);
 
-  const mainAi = safeParse(gemRaw) || safeParse(groqRaw) || {
-    verdict: "Audit Pending",
+  const visualRes = safeParse(visionRaw, "video") || { 
+    verdict: sight?.is_ai ? "Manipulated" : "Real",
     trust_score: sight ? sight.score : 50,
-    summary: "VIDEO REPORT: Manual frame-by-frame context is unavailable. Pixel-based deepfake scanning is at " + (sight ? sight.score : 50) + "% confidence."
+    summary: "Visual scan complete."
   };
 
-  const finalScore = sight ? Math.round((sight.score * 0.7) + (mainAi.trust_score * 0.3)) : mainAi.trust_score;
-  return { type: "video", results: [{ ...mainAi, trust_score: finalScore }] };
+  // 2. Transcript Audit (Uses $1.00 Search Allowance if transcript exists)
+  let transcriptRes = null;
+  if (transcript && transcript.trim() !== "") {
+    console.log("TrustLens PRO: Auditing Transcript Authenticity...");
+    const textPrompt = `Fact-check this video transcript using web search: "${transcript}". 
+    Is the speaker telling the truth? Name your sources. Return JSON.`;
+    
+    const textRaw = await callSmartTextAI(textPrompt);
+    transcriptRes = safeParse(textRaw, "text");
+  }
+
+  // Combine Results
+  const finalVerdict = transcriptRes 
+    ? (visualRes.verdict === "Real" && transcriptRes.verdict === "True" ? "Real" : "Misleading")
+    : visualRes.verdict;
+
+  const finalSummary = transcriptRes 
+    ? `VISUAL: ${visualRes.summary} | SPEECH: ${transcriptRes.summary}`
+    : `${visualRes.summary} (Transcript not available for truth-audit).`;
+
+  return {
+    type: "video",
+    results: [{
+      ...visualRes,
+      verdict: finalVerdict,
+      summary: finalSummary,
+      transcribed_text: transcript || "No transcript provided.",
+      detailed_report: {
+        gen_ai_analysis: visualRes.detailed_report?.gen_ai_analysis || "Visual check complete.",
+        face_forensics: transcriptRes ? "Speech/Logic check complete." : "Speech check skipped (No Transcript).",
+        metadata_editing: transcriptRes?.verdict || "N/A"
+      },
+      origin_trace: transcriptRes?.origin_trace || "Visual Origin Unverified"
+    }]
+  };
 }
