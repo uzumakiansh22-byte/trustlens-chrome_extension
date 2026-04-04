@@ -120,7 +120,7 @@ export async function callSmartVisionAI(prompt, mediaData) {
   return await callVisionFallback(prompt, mediaData);
 }
 
-// CRITICAL FIX: Added the 'export' keyword here
+
 export async function callSightengine(url, type = "image") {
   try {
     const isVideo = type === "video";
