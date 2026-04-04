@@ -1,25 +1,60 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
-import 'dotenv/config';
-import analyzeRoutes from './routes/analyze.js';
+import analyzeRouter from './routes/analyze.js';
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+app.use(express.json());
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST','OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+app.use('/analyze', analyzeRouter);
 
-// MIDDLEWARE
-app.use(cors());
-// Crucial: Increased limit for high-res images/screenshots
-app.use(express.json({ limit: '50mb' })); 
+let latestScanContext = null;
+let chatHistory = []; 
 
-// ROUTES
-app.use('/analyze', analyzeRoutes);
+app.post('/chat', async (req, res) => {
+    const { question } = req.body;
 
-// HEALTH CHECK (Good for your demo to show the server is "Live")
-app.get('/', (req, res) => res.send('TrustLens PRO Forensic Server: ONLINE'));
+    if (chatHistory.length > 40) chatHistory.shift();
 
-app.listen(PORT, () => {
-  console.log(`-----------------------------------------`);
-  console.log(`🚀 TRUSTLENS PRO SERVER RUNNING ON PORT ${PORT}`);
-  console.log(`🛡️  5-PILLAR FORENSIC ENGINE: ACTIVE`);
-  console.log(`-----------------------------------------`);
+    const systemPrompt = `You are the TrustLens Forensic AI. 
+    Current Scan Context: ${JSON.stringify(latestScanContext || "No scan yet")}.
+    
+    MISSION: 
+    - Provide DIRECT, FACTUAL answers. Do not say "I don't have real-time info." 
+    - Use your integrated web-search capabilities to verify breaking news.
+    - If asked about attacks (like the AWS strikes in Bahrain/UAE), give specific details: dates, locations, and impact.
+    - Be witty and expert-level. Use emojis.`;
+
+    try {
+        const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+            method: "POST",
+            headers: { 
+                "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`, 
+                "Content-Type": "application/json" 
+            },
+            body: JSON.stringify({
+
+                model: "google/gemini-2.0-flash-001:online", 
+                messages: [
+                    { role: "system", content: systemPrompt },
+                    ...chatHistory, 
+                    { role: "user", content: question }
+                ]
+            })
+        });
+
+        const data = await response.json();
+        const aiAnswer = data.choices[0].message.content;
+
+        chatHistory.push({ role: "user", content: question }, { role: "assistant", content: aiAnswer });
+        res.json({ answer: aiAnswer });
+    } catch (err) {
+        res.json({ answer: "⚠️ System connection to the live news-grid is lagging. Try again." });
+    }
 });
+
+app.listen(5000, () => console.log("🛡️ Real-Time Agent & Forensic Engine Active on 5000"));
