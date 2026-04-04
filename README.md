@@ -1,58 +1,72 @@
-# 🛡️ TrustLens PRO 2026
-**The Advanced Forensic Suite for Real-Time Misinformation Audit**
+🛡️ TrustLens Pro: Forensic AI Investigator
+TrustLens Pro is an advanced investigative Chrome Extension designed to combat digital misinformation, forged claims, and deepfakes. It provides a multi-layered forensic audit of images, videos, and text claims using a hybrid AI engine.
 
-TrustLens PRO is a high-performance Chrome Extension and Node.js ecosystem designed to dismantle digital deception. By leveraging **Triple-Model Orchestration**, it performs simultaneous forensic audits on Text, Images, and Videos to provide an evidence-based "Trust Score."
+TRUSTLENS ai forensic || Project by ANSH TIWARI
 
----
+🚀 The Dashboard
+TrustLens Pro lives in your browser's SidePanel, offering a sleek and informative interface to manage your digital audits in real-time.
 
-## 🚀 The Mission
-In an era of generative AI and deepfakes, "seeing is no longer believing." TrustLens PRO empowers users to verify the digital world through:
-1. **Visual Integrity:** Detecting AI-generated pixel patterns.
-2. **Contextual Truth:** Fact-checking claims against global news databases.
-3. **Google Lens OCR:** Transcribing hidden text within media for deeper analysis.
 
----
 
-## 🛠️ Tech Stack
-- **Backend:** Node.js, Express.js
-- **Primary Vision AI:** Google Gemini 2.0 Flash (Multimodal)
-- **Contextual Fallback:** Groq (Llama 3.2 Vision / Llama 3.3 70B)
-- **Pixel Forensics:** Sightengine (GenAI & Deepfake Detection)
-- **Frontend:** Chrome Extension Manifest V3 (Sidepanel API)
+Key Features
+5-Pillar Forensic Audit: Deep analysis on Gen-AI signatures, face shimmers, metadata editing, physical logic, and provenance.
 
----
+Real-Time Fact-Checking: Powered by Gemini 2.0 Flash (Online) to verify breaking news claims via integrated web-search capabilities.
 
-## 🌟 Key Features
-- **🔍 Google Lens Integration:** Real-time OCR transcription of any text found within images or video frames.
-- **🧠 Triple-Model Verification:** Cross-references results between Gemini, Groq, and Sightengine to eliminate AI hallucinations.
-- **📹 Deepfake Detection:** Specialized forensic scanning for temporal inconsistencies and facial warping in video.
-- **📋 Forensic Data Sheets:** Generates a downloadable technical report explaining the *why* behind every verdict.
-- **🚨 Red/Green Flag System:** Instant visual breakdown of authentic vs. suspicious digital markers.
+Weighted Scoring System: Combines hard pixel evidence (60%) with contextual AI logic (40%) to provide a reliable Trust Score.
 
----
+Conversational Agent: A built-in "Forensic Investigator" chatbot to discuss scan results and answer complex investigative questions.
 
-## 📦 Installation & Setup
+🛠️ Technical Stack
+Frontend: Chrome Extension Manifest V3, SidePanel API, ESM JavaScript.
 
+Backend: Node.js, Express.js.
+
+AI Models:
+
+Text/Search: Google Gemini 2.0 Flash (Online) via OpenRouter.
+
+Vision: Meta Llama 4 Scout.
+
+Pixel Forensics: Sightengine (Deepfake & Gen-AI detection).
+
+🔍 The Investigation Process
+TrustLens Pro integrates seamlessly into your browsing experience. With a single click, a comprehensive audit is launched.
+
+
+How to Use
+Context Menu Audit: Right-click any image, video, or selected text on a webpage and select "Analyse with TrustLens Pro".
+
+Multimodal Scan: Use the dashboard to manually paste media URLs or text claims.
+
+Video Transcription: Paste a video transcript to perform a simultaneous visual and speech truth-audit.
+
+Investigate: Engage with the Forensic Investigator chatbot at the bottom of the panel to ask follow-up questions about specific scan results.
+
+⚙️ Installation & Setup
 1. Backend Configuration
-a. Navigate to the `/backend` folder.
-b. Run `npm install` to install dependencies.
-c. Create a `.env` file and add your API keys:
-   ```env
-   GEMINI_API_KEY=your_key
-   GROQ_API_KEY=your_key
-   SIGHTENGINE_API_USER=your_user_id
-   SIGHTENGINE_API_SECRET=your_secret
-   PORT=5000
+Navigate to your backend directory and create a .env file:
 
+Code snippet
+PORT=5000
+OPENROUTER_API_KEY=your_key_here
+GROQ_API_KEY=your_key_here
+SIGHTENGINE_API_USER=your_user_id
+SIGHTENGINE_API_SECRET=your_api_secret
+Install dependencies and start the server:
 
-2. Extension Setup
-a. Open Google Chrome and go to chrome://extensions/.
-b. Enable Developer Mode (top right toggle).
-c. Click Load Unpacked and select the /extension folder from this project.
-d. Pin TrustLens PRO to your toolbar!
+Bash
+npm install
+node server.js
+2. Extension Installation
+Open Chrome and navigate to chrome://extensions/.
 
-3 📖 How to Use
-a. Right-Click Audit: Right-click any image, video, or highlighted text on the web and select "Analyse with TrustLens PRO."
-b. Manual Upload: Open the sidepanel and upload a local screenshot for a full forensic breakdown.
+Enable Developer Mode (top right).
 
-c. URL Scan: Paste a direct link to any media file for a high-speed cloud audit.
+Click Load Unpacked.
+
+Select the folder containing your extension files (including manifest.json).
+
+👤 Author
+Ansh tiwari
+UCER | Student at AKTU University
