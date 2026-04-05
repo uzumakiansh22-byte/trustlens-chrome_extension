@@ -228,7 +228,7 @@ Passionate about solving societal problems through AI and IoT, with a focus on d
 
 - **LinkedIn:** [in/ansh-tiwari-b64ab1385](https://www.linkedin.com/in/ansh-tiwari-b64ab1385/)
 - **Portfolio:** [Your Portfolio Link Here]
-- **GitHub:** [anshtiwari-ucer](https://github.com/anshtiwari-ucer)
+- **GitHub:** [anshtiwari-ucer](https://github.com/uzumakiansh22-byte)
 
 ---
 
