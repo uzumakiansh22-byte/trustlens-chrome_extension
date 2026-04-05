@@ -1,15 +1,15 @@
 ﻿Here is the complete, ready-to-paste markdown content for your **TrustLens Pro** repository. Copy the block below exactly as it is into your `README.md` file.
 
 ```markdown
-# 🛡️ TrustLens Pro: Forensic AI Investigator
+🛡️ TrustLens Pro: Forensic AI Investigator
 
-**An investigative shield against digital misinformation and deepfake threats that brings AI-powered forensic analysis to your browser for instant credibility verification.**
+An investigative shield against digital misinformation and deepfake threats that brings AI-powered forensic analysis to your browser for instant credibility verification.**
 
 ---
 
-## 🎯 Overview
+🎯 Overview
 
-**TrustLens Pro** is a Chrome Extension designed to combat digital misinformation by providing:
+TrustLens Pro is a Chrome Extension designed to combat digital misinformation by providing:
 - One-click forensic analysis of images, videos, and text claims
 - Multi-modal AI verification using 5 forensic pillars
 - Real-time fact-checking with search-enabled AI
@@ -19,31 +19,31 @@ This project was built to democratize forensic tools, making advanced deepfake d
 
 ---
 
-## ✨ Features
+✨ Features
 
-### 🔍 One-Click Audit
+ 🔍 One-Click Audit
 - Seamless Chrome context menu integration
 - Instant forensic analysis without leaving current tab
 - High-performance SidePanel dashboard
 
-### 📊 Unified Forensic Dashboard
+ 📊 Unified Forensic Dashboard
 - Visual "Trust Score" with color-coded results
 - Break down audits into digestible Red/Green flags
 - Real-time progress tracking
 
-### 🧠 Multi-Modal Analysis
+ 🧠 Multi-Modal Analysis
 - **Image Forensics** – Detects synthetic textures and pixel inconsistencies
 - **Video/Transcript Audit** – Cross-references speech with visuals
 - **Text Fact-Checking** – Identifies logical fallacies and emotional manipulation
 
-### 💬 Forensic Investigator Chat
+ 💬 Forensic Investigator Chat
 - Integrated AI agent for deep-dive questions
 - Personal consultant for specific scan results
 - Context-aware follow-up queries
 
 ---
 
-## 🛠️ Tech Stack
+🛠️ Tech Stack
 
 | Layer | Technology |
 |-------|------------|
@@ -54,7 +54,7 @@ This project was built to democratize forensic tools, making advanced deepfake d
 
 ---
 
-## 📁 Project Structure
+📁 Project Structure
 
 ```
 TrustLens-Pro/
@@ -76,9 +76,9 @@ TrustLens-Pro/
 
 ---
 
-## 🚀 Getting Started
+🚀 Getting Started
 
-### Prerequisites
+ Prerequisites
 - Node.js (v18 or higher)
 - Chrome Browser
 - API keys:
@@ -86,20 +86,20 @@ TrustLens-Pro/
   - Groq API
   - Sightengine API
 
-### Installation
+ Installation
 
-1. **Clone the repository**
+1. Clone the repository
    ```bash
    git clone [https://github.com/anshtiwari-ucer/TrustLens-Pro.git](https://github.com/anshtiwari-ucer/TrustLens-Pro.git)
    cd TrustLens-Pro/backend
    ```
 
-2. **Install dependencies**
+2. Install dependencies
    ```bash
    npm install
    ```
 
-3. **Set up environment variables**
+3. Set up environment variables
    
    Create a `.env` file in the `backend` folder:
    ```env
@@ -110,44 +110,44 @@ TrustLens-Pro/
    SIGHTENGINE_API_SECRET=your_api_secret
    ```
 
-4. **Start the backend server**
+4. Start the backend server
    ```bash
    node server.js
    ```
 
-5. **Load the Chrome extension**
+5. Load the Chrome extension
    - Open Chrome and navigate to `chrome://extensions/`
    - Enable **Developer Mode**
    - Click **Load Unpacked** and select the `extension` folder
 
-6. **Access the extension**
+6. Access the extension
    - Right-click on any image, video, or selected text
    - Choose **"Audit with TrustLens Pro"**
    - View results in the SidePanel
 
 ---
 
-## 📖 Usage Guide
+📖 Usage Guide
 
-### Image Forensics
+Image Forensics
 1. Right-click on any suspicious image
 2. Select **Audit with TrustLens Pro**
 3. View pixel-level analysis and synthetic pattern detection
 4. Check the Trust Score and individual pillar results
 
-### Video Analysis
+Video Analysis
 1. Right-click on a video element
 2. Choose forensic audit option
 3. Review lip-sync accuracy and frame-by-frame analysis
 4. Get deepfake probability assessment
 
-### Text Fact-Checking
+Text Fact-Checking
 1. Highlight suspicious text on any webpage
 2. Right-click and select **Verify Claim**
 3. See cross-referenced results from news databases
 4. Review logical fallacy detection
 
-### Investigator Chat
+Investigator Chat
 1. After any audit, click **Ask Forensic AI**
 2. Type follow-up questions (e.g., "Why was this flagged as suspicious?")
 3. Get detailed explanations from the AI consultant
@@ -155,7 +155,7 @@ TrustLens-Pro/
 
 ---
 
-## 🧠 The 5-Pillar Logic
+🧠 The 5-Pillar Logic
 
 | Pillar | Detection Method |
 |--------|------------------|
@@ -167,18 +167,18 @@ TrustLens-Pro/
 
 ---
 
-## 🐛 Troubleshooting
+🐛 Troubleshooting
 
-### Extension Not Showing in Context Menu
-**Problem:** Right-click menu doesn't show TrustLens Pro option
+  Extension Not Showing in Context Menu
+Problem: Right-click menu doesn't show TrustLens Pro option
 
-**Solutions:**
+Solutions:
 - Reload extension at `chrome://extensions/`
 - Check console for errors (right-click → Inspect → Console)
 - Ensure manifest.json has correct permissions
 - Restart Chrome browser
 
-### Backend Connection Failed
+  Backend Connection Failed
 **Problem:** "Unable to reach TrustLens server"
 
 **Solutions:**
