@@ -19,6 +19,20 @@ This project was built to democratize forensic tools, making advanced deepfake d
 
 ---
 
+## 📺 Project Demo
+> **[INSERT DEMO VIDEO HERE]**
+> *Tip: Drag and drop your .mp4 file directly into the GitHub editor to embed it here.*
+
+---
+
+## 🚀 Live Deployment
+
+The project is currently live and operational. You can interact with the backend and install the extension using the links below:
+
+* **Backend API (Hosted on Render):** `https://your-app-name.onrender.com`
+* **Latest Extension Build:** [Download TrustLens-Pro-v1.0.0.zip](https://github.com/uzumakiansh22-byte/trustlens-chrome_extension/releases/latest)
+---
+
 ✨ Features
 
  🔍 One-Click Audit
@@ -83,19 +97,39 @@ TrustLens-Pro/
   - Groq API
   - Sightengine API
 
- Installation
+---
+## Installation (option 1)
+
+To test the live version of TrustLens Pro, follow these steps:
+
+### 1. Install the Extension
+1. Download the **TrustLens-Pro-v1.0.0.zip** from the [Releases](https://github.com/uzumakiansh22-byte/trustlens-chrome_extension/releases) section.
+2. Extract the ZIP file on your computer.
+3. Open Chrome and navigate to `chrome://extensions/`.
+4. Enable **Developer Mode** (toggle in the top right corner).
+5. Click **Load Unpacked** and select the extracted `extension` folder.
+
+### 2. Perform an Audit
+1. Right-click on any image, video, or highlighted text on any website.
+2. Select **"Audit with TrustLens Pro"**.
+3. The SidePanel will open automatically, displaying the live forensic analysis from our Render-hosted server.
+
+---
+
+##Installation (option 2)
 
 1. Clone the repository
    ```bash
    git clone [https://github.com/anshtiwari-ucer/TrustLens-Pro.git](https://github.com/anshtiwari-ucer/TrustLens-Pro.git)
    cd TrustLens-Pro/backend
    ```
-
+---
+```
 # 2. Install dependencies
    ```bash
    npm install
    ```
-
+```
 # 3. Set up environment variables
    
    Create a `.env` file in the `backend` folder:
@@ -106,12 +140,12 @@ TrustLens-Pro/
    SIGHTENGINE_API_USER=your_user_id
    SIGHTENGINE_API_SECRET=your_api_secret
    ```
-
+```
 # 4. Start the backend server
    ```bash
    node server.js
    ```
-
+```
 # 5. Load the Chrome extension
    - Open Chrome and navigate to `chrome://extensions/`
    - Enable **Developer Mode**
