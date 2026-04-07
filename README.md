@@ -56,24 +56,21 @@ This project was built to democratize forensic tools, making advanced deepfake d
 
 📁 Project Structure
 
-```
 TrustLens-Pro/
 ├── backend/
-│   ├── server.js              # Express server
-│   ├── routes/                # API route definitions
-│   └── .env                   # Environment configuration
+│   ├── server.js            # Express server
+│   ├── routes/             # API route definitions
+│   └── .env                # Environment configuration
 ├── extension/
-│   ├── manifest.json          # Chrome extension manifest
-│   ├── sidepanel/             # Dashboard HTML/CSS/JS
-│   ├── background.js          # Background service worker
-│   └── content.js             # Content script for context menu
+│   ├── manifest.json       # Chrome extension manifest
+│   ├── sidepanel/          # Dashboard HTML/CSS/JS
+│   ├── background.js       # Background service worker
+│   └── content.js          # Content script for context menu
 ├── utils/
-│   ├── forensicEngine.js      # 5-pillar analysis logic
-│   ├── geminiService.js       # Gemini API integration
-│   └── sightengineClient.js   # Forensics API client
-└── README.md                  # This file
-```
-
+│   ├── forensicEngine.js   # 5-pillar analysis logic
+│   ├── geminiService.js    # Gemini API integration
+│   └── sightengineClient.js # Forensics API client
+└── README.md               # This file
 ---
 
 🚀 Getting Started
