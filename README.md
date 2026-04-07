@@ -91,12 +91,12 @@ TrustLens-Pro/
    cd TrustLens-Pro/backend
    ```
 
-2. Install dependencies
+# 2. Install dependencies
    ```bash
    npm install
    ```
 
-3. Set up environment variables
+# 3. Set up environment variables
    
    Create a `.env` file in the `backend` folder:
    ```env
@@ -107,44 +107,44 @@ TrustLens-Pro/
    SIGHTENGINE_API_SECRET=your_api_secret
    ```
 
-4. Start the backend server
+# 4. Start the backend server
    ```bash
    node server.js
    ```
 
-5. Load the Chrome extension
+# 5. Load the Chrome extension
    - Open Chrome and navigate to `chrome://extensions/`
    - Enable **Developer Mode**
    - Click **Load Unpacked** and select the `extension` folder
 
-6. Access the extension
+# 6. Access the extension
    - Right-click on any image, video, or selected text
    - Choose **"Audit with TrustLens Pro"**
    - View results in the SidePanel
 
 ---
 
-📖 Usage Guide
+# 📖 Usage Guide
 
-Image Forensics
+## Image Forensics
 1. Right-click on any suspicious image
 2. Select **Audit with TrustLens Pro**
 3. View pixel-level analysis and synthetic pattern detection
 4. Check the Trust Score and individual pillar results
 
-Video Analysis
+## Video Analysis
 1. Right-click on a video element
 2. Choose forensic audit option
 3. Review lip-sync accuracy and frame-by-frame analysis
 4. Get deepfake probability assessment
 
-Text Fact-Checking
+## Text Fact-Checking
 1. Highlight suspicious text on any webpage
 2. Right-click and select **Verify Claim**
 3. See cross-referenced results from news databases
 4. Review logical fallacy detection
 
-Investigator Chat
+## Investigator Chat
 1. After any audit, click **Ask Forensic AI**
 2. Type follow-up questions (e.g., "Why was this flagged as suspicious?")
 3. Get detailed explanations from the AI consultant
