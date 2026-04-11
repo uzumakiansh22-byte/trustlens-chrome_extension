@@ -1,3 +1,5 @@
+
+
 ﻿Here is the complete, ready-to-paste markdown content for your **TrustLens Pro** repository. Copy the block below exactly as it is into your `README.md` file.
 
 ```markdown
@@ -16,12 +18,6 @@ TrustLens Pro is a Chrome Extension designed to combat digital misinformation by
 - Intuitive dashboard accessible without leaving your current tab
 
 This project was built to democratize forensic tools, making advanced deepfake detection accessible to everyday users rather than just security experts.
-
----
-
-## 📺 Project Demo
-> **[INSERT DEMO VIDEO HERE]**
-> *Tip: Drag and drop your .mp4 file directly into the GitHub editor to embed it here.*
 
 ---
 
