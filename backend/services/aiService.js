@@ -59,7 +59,23 @@ export async function callTextFallback(prompt) {
 
 /* --- VISION ENGINES --- */
 
+/** Groq `image_url` accepts https/http and data:image/* — not blob: or data:video/*. */
+export function isGroqVisionCompatibleUrl(mediaData) {
+  if (!mediaData || typeof mediaData !== "string") return false;
+  if (mediaData.startsWith("blob:")) return false;
+  if (mediaData.startsWith("data:video/") || mediaData.startsWith("data:application/")) return false;
+  return (
+    mediaData.startsWith("https://") ||
+    mediaData.startsWith("http://") ||
+    mediaData.startsWith("data:image/")
+  );
+}
+
 export async function callVisionPrimary(prompt, mediaData) {
+  if (!isGroqVisionCompatibleUrl(mediaData)) {
+    console.log("[GROQ]: Skipping vision — URL not supported (use https or data:image, not blob/video data).");
+    return null;
+  }
   try {
     const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
@@ -86,6 +102,7 @@ export async function callVisionPrimary(prompt, mediaData) {
   }
 }
 export async function callVisionFallback(prompt, mediaData) {
+  if (!isGroqVisionCompatibleUrl(mediaData)) return null;
   try {
     const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
@@ -113,6 +130,59 @@ export async function callSmartTextAI(prompt) {
   return await callTextFallback(prompt);
 }
 
+/** Plain chat (no JSON mode) — use for /chat so replies are real text, not JSON blobs. */
+export async function callChatAssistant(prompt) {
+  const r = await callChatOpenRouter(prompt);
+  if (r) return r;
+  return await callChatGroq(prompt);
+}
+
+async function callChatOpenRouter(prompt) {
+  try {
+    const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "google/gemini-2.0-flash-001:online",
+        messages: [{ role: "user", content: prompt }],
+        plugins: [{ id: "web", max_results: 3 }]
+      })
+    });
+    const data = await res.json();
+    if (data.error) {
+      console.log("[Chat OpenRouter]:", data.error.message || data.error);
+      return null;
+    }
+    return data.choices?.[0]?.message?.content || null;
+  } catch (e) {
+    console.log("[Chat OpenRouter]:", e.message);
+    return null;
+  }
+}
+
+async function callChatGroq(prompt) {
+  try {
+    const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.GROQ_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: "llama-3.3-70b-versatile",
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
+    const data = await res.json();
+    return data?.choices?.[0]?.message?.content || null;
+  } catch {
+    return null;
+  }
+}
+
 export async function callSmartVisionAI(prompt, mediaData) {
   console.log("--- Vision Chain: Auditing Pixels ---");
   let res = await callVisionPrimary(prompt, mediaData);
@@ -120,8 +190,12 @@ export async function callSmartVisionAI(prompt, mediaData) {
   return await callVisionFallback(prompt, mediaData);
 }
 
-
+// CRITICAL FIX: Added the 'export' keyword here
 export async function callSightengine(url, type = "image") {
+  if (!url || typeof url !== "string") return null;
+  if (!url.startsWith("https://") && !url.startsWith("http://")) {
+    return null;
+  }
   try {
     const isVideo = type === "video";
     const res = await fetch(`https://api.sightengine.com/1.0/${isVideo ? 'video/check-sync' : 'check'}.json?${isVideo ? 'stream_url' : 'url'}=${encodeURIComponent(url)}&models=genai,deepfake&api_user=${process.env.SIGHTENGINE_API_USER}&api_secret=${process.env.SIGHTENGINE_API_SECRET}`);

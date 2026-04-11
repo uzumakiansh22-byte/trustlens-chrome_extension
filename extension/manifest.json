@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "TrustLens Pro: Forensic AI",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Advanced AI-powered creator credibility and image forensics analyzer.",
   "permissions": [
     "sidePanel",
@@ -12,8 +12,9 @@
     "contextMenus"
   ],
   "host_permissions": [
+    "http://127.0.0.1:5000/*",
     "http://localhost:5000/*",
-    "http://127.0.0.1:5000/*"
+    "<all_urls>"
   ],
   "action": {
     "default_title": "Open TrustLens Dashboard"
@@ -24,6 +25,12 @@
   "background": {
     "service_worker": "background.js"
   },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",

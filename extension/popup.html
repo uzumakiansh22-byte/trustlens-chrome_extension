@@ -1,35 +1,44 @@
-function renderResult() {
-  chrome.storage.local.get("result", (data) => {
-    const output = document.getElementById("output");
-    if (!data.result) return;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrustLens PRO</title>
+    <style>
+        body { width: 350px; font-family: 'Segoe UI', sans-serif; background: #0f0f0f; color: #e0e0e0; padding: 15px; margin: 0; }
+        .header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        #dashboard { background: #1a1a1a; padding: 15px; border-radius: 8px; margin-top: 15px; min-height: 50px; border-left: 4px solid #00ffcc; }
+        
+        /* Agent UI */
+        #agent-section { margin-top: 20px; border-top: 1px solid #333; padding-top: 15px; }
+        #chat-box { height: 180px; overflow-y: auto; background: #050505; padding: 10px; border-radius: 5px; font-size: 13px; margin-bottom: 10px; }
+        .chat-input-area { display: flex; gap: 8px; }
+        input { flex-grow: 1; padding: 8px; background: #222; border: 1px solid #444; color: white; border-radius: 4px; }
+        button { background: #00ffcc; color: #000; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #00cca3; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2 style="margin:0; color: #00ffcc;">🛡️ TrustLens PRO</h2>
+    </div>
 
-    if (data.result.loading) {
-      output.innerHTML = `<div style="text-align:center; padding:20px;">⏳ Analyzing with AI...</div>`;
-      return;
-    }
+    <div id="dashboard">
+        <em>Ready for Forensic Audit...</em>
+    </div>
+    
+    <button id="analyze-btn" style="width: 100%; margin-top: 15px;">START ANALYZE</button>
 
-    if (data.result.error) {
-      output.innerHTML = `<div style="color:red; padding:10px;">Error: ${data.result.error}</div>`;
-      return;
-    }
-
-    // Handle results array for text or single result for image/video
-    const results = data.result.results || [data.result.result];
-
-    output.innerHTML = results.map(r => `
-      <div class="card" style="border-left: 5px solid ${r.verdict === 'True' || r.verdict === 'Real' ? '#27ae60' : '#e74c3c'}">
-        <div style="float:right; font-weight:bold;">${r.trust_score}%</div>
-        <h3 class="${r.verdict}">${r.verdict}</h3>
-        <p>${r.summary || r.reason}</p>
-        <div style="font-size:10px; color:gray; margin-top:5px;">
-          Flags: ${(r.key_flags || []).join(", ")}
+    <div id="agent-section">
+        <h4 style="margin: 0 0 10px 0;">💬 Forensic Agent</h4>
+        <div id="chat-box">
+            <div style="color: #888;">Agent waiting for data...</div>
         </div>
-      </div>
-    `).join("");
-  });
-}
+        <div class="chat-input-area">
+            <input type="text" id="user-query" placeholder="Ask about the scan...">
+            <button id="ask-btn">ASK</button>
+        </div>
+    </div>
 
-// Watch for changes while the side panel is open
-chrome.storage.onChanged.addListener(renderResult);
-// Render immediately when opened
-document.addEventListener("DOMContentLoaded", renderResult);
+    <script src="popup.js"></script>
+</body>
+</html>

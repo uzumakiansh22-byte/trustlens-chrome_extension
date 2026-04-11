@@ -1,4 +1,5 @@
 import { callSmartVisionAI, callSightengine, safeParse } from "./aiService.js";
+import { factCheckOcrOnImage } from "./ocrClaimService.js";
 
 /**
  * Handles Image Forensics using a 60/40 Weighted Scoring System.
@@ -33,7 +34,9 @@ export async function handleImage(imageUrl) {
     "summary": "Final forensic conclusion. Explain why it is real or fake.",
     "red_flags": [],
     "green_flags": [],
-    "origin_trace": "Cite specific source URLs or outlets if verified."
+    "origin_trace": "Cite specific source URLs or outlets if verified.",
+    "media_trace_urls": ["Optional: https URLs where this image or story is discussed (only if known)."],
+    "ocr_quick_claim": "One line: is the ON-IMAGE text mostly factual, opinion, meme/humor, or unclear?"
   }`;
 
   console.log("TrustLens PRO: Initiating Visual Audit (Groq Vision + Sightengine)...");
@@ -54,8 +57,32 @@ export async function handleImage(imageUrl) {
   // Logic: Pixels (Hard Evidence) 60% + AI (Contextual Logic) 40%
   const finalScore = sight ? Math.round((sight.score * 0.6) + (mainAi.trust_score * 0.4)) : mainAi.trust_score;
 
-  return { 
-    type: "image", 
-    results: [{ ...mainAi, trust_score: finalScore }] 
+  const visionSummary = `${mainAi.content_summary || ""}\n${mainAi.ocr_quick_claim || ""}`.trim();
+  let ocrCheck = null;
+  try {
+    ocrCheck = await factCheckOcrOnImage(mainAi.transcribed_text || "", visionSummary);
+  } catch (e) {
+    console.log("TrustLens PRO: OCR claim check skipped:", e.message);
+  }
+
+  const fromVisionTraces = Array.isArray(mainAi.media_trace_urls) ? mainAi.media_trace_urls : [];
+  const fromOcrTraces = ocrCheck?.media_trace_urls || [];
+  const traceNote = [mainAi.origin_trace, ocrCheck?.media_trace_note].filter(Boolean).join(" ");
+
+  const merged = {
+    ...mainAi,
+    trust_score: finalScore,
+    ocr_claim_type: ocrCheck?.claim_type ?? null,
+    ocr_claim_verdict: ocrCheck?.claim_verdict ?? null,
+    ocr_claim_summary: ocrCheck?.summary ?? null,
+    ocr_claim_trust_score: ocrCheck?.trust_score ?? null,
+    verification_sources: ocrCheck?.verification_sources?.length ? ocrCheck.verification_sources : [],
+    media_trace_urls: [...new Set([...fromVisionTraces, ...fromOcrTraces].filter(Boolean))],
+    media_trace_note: traceNote || null
+  };
+
+  return {
+    type: "image",
+    results: [merged]
   };
 }
