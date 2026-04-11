@@ -25,8 +25,9 @@ This project was built to democratize forensic tools, making advanced deepfake d
 
 The project is currently live and operational. You can interact with the backend and install the extension using the links below:
 
-* **Backend API (Hosted on Render):** `https://your-app-name.onrender.com`
-* **Latest Extension Build:** [Download TrustLens-Pro-v1.0.0.zip](https://github.com/uzumakiansh22-byte/trustlens-chrome_extension/releases/latest)
+* **Backend API [Hosted on Render(old)]:** `https://trustlens-chrome-extension.onrender.com`
+* **Backend API [Hosted on Render(new)]:** `https://trustlens-chrome-extension-1-0-0-2.onrender.com`
+* **Latest Extension Build:** [Download TrustLens-Pro-v1.0.2.zip(new version)](https://github.com/uzumakiansh22-byte/trustlens-chrome_extension/releases/tag/v1.0.2)
 ---
 
 ✨ Features
